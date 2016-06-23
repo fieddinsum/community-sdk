@@ -1,5 +1,8 @@
 # Emotiv SDK - Community Edition
 
+# I change this file!
+
+
 Here is the repository of the Emotiv SDK Community Edition, along with code examples and other development tools.
 * Supports EPOC (over Emotiv USB dongle)
 * Supports Insight and EPOC+ (over BTLE and Emotiv USB dongle)
