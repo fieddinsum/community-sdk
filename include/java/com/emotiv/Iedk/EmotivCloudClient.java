@@ -1,5 +1,7 @@
 package com.emotiv.Iedk;
 
+import java.util.List;
+
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -28,6 +30,11 @@ public interface EmotivCloudClient extends Library {
     public static class profileVerInfo extends Structure{
         int version;
         char[] last_modified;
+		@Override
+		protected List getFieldOrder() {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }
     
     
@@ -36,7 +43,7 @@ public interface EmotivCloudClient extends Library {
      *  \return bool
      *              - true if connect successfully
      */
-    boolean EC_Connect();
+    int EC_Connect();
 
 
 	//! Reconnection to Emotiv engine
@@ -44,7 +51,7 @@ public interface EmotivCloudClient extends Library {
 	 *  \return bool
 	 *              - true if Reconnect successfully
 	*/
-	boolean EC_ReconnectEngine();
+	int EC_ReconnectEngine();
 
 
 	//! Disconnection to Emotiv engine
@@ -52,13 +59,13 @@ public interface EmotivCloudClient extends Library {
 	 *   \return bool
 	 *              - true if Reconnect successfully
 	*/
-	boolean EC_DisconnectEngine();
+	int EC_DisconnectEngine();
 
     
     //! Terminate the connection to Emotiv Cloud server
     /*!
      */
-    void EC_Disconnect();
+    int EC_Disconnect();
 
     
     //! Login Emotiv Cloud with EmotivID
@@ -69,7 +76,7 @@ public interface EmotivCloudClient extends Library {
      *  \return bool
      *              - true if login successfully
      */
-    boolean EC_Login(String username, String password);
+    int EC_Login(String username, String password);
 
     
     //! Logout Emotiv Cloud
@@ -77,7 +84,7 @@ public interface EmotivCloudClient extends Library {
      *  \return bool
      *              - true if logout successfully
      */
-     boolean EC_Logout(int userCloudID);
+     int EC_Logout(int userCloudID);
 
     
     //! Get user ID after login
@@ -86,7 +93,7 @@ public interface EmotivCloudClient extends Library {
      *  \return bool
      *              - true if fetched successfully
      */
-    boolean EC_GetUserDetail(IntByReference userCloudID);
+    int EC_GetUserDetail(IntByReference userCloudID);
 
     
     //! Save user profile to Emotiv Cloud
@@ -98,7 +105,7 @@ public interface EmotivCloudClient extends Library {
      *  \return bool
      *              - true if saved successfully
      */
-    boolean EC_SaveUserProfile(int userCloudID, int engineUserID, String profileName, int ptype);
+    int EC_SaveUserProfile(int userCloudID, int engineUserID, String profileName, int ptype);
     
     
     //! Update user profile to Emotiv Cloud
@@ -110,7 +117,7 @@ public interface EmotivCloudClient extends Library {
      *  \return bool 
      *               - true if updated successfully
      */
-    boolean EC_UpdateUserProfile(int userCloudID, int engineUserID, int profileId);
+    int EC_UpdateUserProfile(int userCloudID, int engineUserID, int profileId);
     
     
     //! Delete user profile from Emotiv Cloud
@@ -120,7 +127,7 @@ public interface EmotivCloudClient extends Library {
      *  \return bool
      *                - true if updated successfully
      */
-    boolean EC_DeleteUserProfile(int userCloudID, int profileId);
+    int EC_DeleteUserProfile(int userCloudID, int profileId);
 
     
     //! Get profile ID of a user
@@ -142,7 +149,7 @@ public interface EmotivCloudClient extends Library {
      *  \return bool
      *               - true if loaded successfully
      */
-    boolean EC_LoadUserProfile(int userCloudID, int engineUserID, int profileId, int version);
+    int EC_LoadUserProfile(int userCloudID, int engineUserID, int profileId, int version);
 
     
     //! Update all the profile info from Emotiv Cloud

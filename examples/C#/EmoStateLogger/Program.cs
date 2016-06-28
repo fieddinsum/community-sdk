@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using Emotiv;
 using System.IO;
 using System.Threading;
-using System.Reflection;
 
 namespace EmoStateLogger
 {
@@ -23,14 +22,16 @@ namespace EmoStateLogger
         static System.IO.StreamWriter expLog = new System.IO.StreamWriter("FacialExpression.log");
         static System.IO.StreamWriter cogLog = new System.IO.StreamWriter("MentalCommand.log");
 
+        static Boolean enableLoger = false;
+
         static void engine_EmoEngineConnected(object sender, EmoEngineEventArgs e)
         {
-            Console.WriteLine("connected");
+            Console.WriteLine("Emoengine connected");
         }
 
         static void engine_EmoEngineDisconnected(object sender, EmoEngineEventArgs e)
         {
-            Console.WriteLine("disconnected");
+            Console.WriteLine("Emoengine disconnected");
         }
         static void engine_UserAdded(object sender, EmoEngineEventArgs e)
         {
@@ -81,11 +82,10 @@ namespace EmoStateLogger
             Single power = es.MentalCommandGetCurrentActionPower();
             Boolean isActive = es.MentalCommandIsActive();
 
-            cogLog.WriteLine(
-                "{0},{1},{2},{3}",
-                timeFromStart,
-                cogAction, power, isActive);
+            cogLog.WriteLine("{0},{1},{2},{3}", timeFromStart, cogAction, power, isActive);
             cogLog.Flush();
+            if (enableLoger)
+                Console.WriteLine("{0},{1},{2},{3}", timeFromStart, cogAction, power, isActive);
         }
 
         static void engine_FacialExpressionEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
@@ -211,25 +211,47 @@ namespace EmoStateLogger
             switch (key)
             {
                 case ConsoleKey.F1:
-                    EmoEngine.Instance.MentalCommandSetTrainingAction(0, EdkDll.IEE_MentalCommandAction_t.MC_PUSH);
-                    EmoEngine.Instance.MentalCommandSetTrainingControl(0, EdkDll.IEE_MentalCommandTrainingControl_t.MC_START);
+                    EmoEngine.Instance.MentalCommandSetActiveActions(0, (uint)EdkDll.IEE_MentalCommandAction_t.MC_LEFT);
+                    EmoEngine.Instance.MentalCommandSetActiveActions(0, (uint)EdkDll.IEE_MentalCommandAction_t.MC_RIGHT);
+                    Console.WriteLine("Setting MentalCommand active actions for user");
                     break;
                 case ConsoleKey.F2:
-                    EmoEngine.Instance.FacialExpressionSetTrainingAction(0, EdkDll.IEE_FacialExpressionAlgo_t.FE_CLENCH);
-                    EmoEngine.Instance.FacialExpressionSetTrainingControl(0, EdkDll.IEE_FacialExpressionTrainingControl_t.FE_START);
+                    EmoEngine.Instance.MentalCommandSetTrainingAction(0, EdkDll.IEE_MentalCommandAction_t.MC_NEUTRAL);
+                    EmoEngine.Instance.MentalCommandSetTrainingControl(0, EdkDll.IEE_MentalCommandTrainingControl_t.MC_START);
+                    break;
+                case ConsoleKey.F3:
+                    EmoEngine.Instance.MentalCommandSetTrainingAction(0, EdkDll.IEE_MentalCommandAction_t.MC_RIGHT);
+                    EmoEngine.Instance.MentalCommandSetTrainingControl(0, EdkDll.IEE_MentalCommandTrainingControl_t.MC_START);
+                    break;
+                case ConsoleKey.F4:
+                    EmoEngine.Instance.MentalCommandSetTrainingAction(0, EdkDll.IEE_MentalCommandAction_t.MC_LEFT);
+                    EmoEngine.Instance.MentalCommandSetTrainingControl(0, EdkDll.IEE_MentalCommandTrainingControl_t.MC_START);
                     break;
                 case ConsoleKey.F5:
                     EmoEngine.Instance.MentalCommandSetActivationLevel(0, 2);
-                    Console.WriteLine("Cog Activateion level set to {0}", EmoEngine.Instance.MentalCommandGetActivationLevel(0));
+                    Console.WriteLine("MentalCommand Activateion level set to {0}", EmoEngine.Instance.MentalCommandGetActivationLevel(0));
                     break;
                 case ConsoleKey.F6:
-                    Console.WriteLine("Cog Activateion level is {0}", EmoEngine.Instance.MentalCommandGetActivationLevel(0));
-                    break;                
-                case ConsoleKey.F9:
+                    Console.WriteLine("MentalCommand Activateion level is {0}", EmoEngine.Instance.MentalCommandGetActivationLevel(0));
+                    break;
+                case ConsoleKey.F7:
+                    Console.WriteLine("Get the current overall skill rating: {0}", EmoEngine.Instance.MentalCommandGetOverallSkillRating(0));
+                    break;
+                case ConsoleKey.F8:
+                    EmoEngine.Instance.FacialExpressionSetTrainingAction(0, EdkDll.IEE_FacialExpressionAlgo_t.FE_CLENCH);
+                    EmoEngine.Instance.FacialExpressionSetTrainingControl(0, EdkDll.IEE_FacialExpressionTrainingControl_t.FE_START);
+                    break;
+                case ConsoleKey.F9:                    
                     String version;
                     UInt32 buildNum;
                     EmoEngine.Instance.SoftwareGetVersion(out version, out buildNum);
                     Console.WriteLine("Software Version: {0}, {1}", version, buildNum);
+                    break;
+                case ConsoleKey.F10:
+                    enableLoger = !enableLoger;
+                    break;
+
+                default:
                     break;
             }
         }
@@ -274,7 +296,7 @@ namespace EmoStateLogger
             engine.Connect();
 
             Console.WriteLine("===========================================================================");
-            Console.WriteLine("Example to show how to log the EmoState from EmoEngine/EmoComposer.");
+            Console.WriteLine("Example to show how to log the EmoState from EmoEngine.");
             Console.WriteLine("===========================================================================");
 
             ConsoleKeyInfo cki = new ConsoleKeyInfo();
@@ -293,7 +315,7 @@ namespace EmoStateLogger
                             break;
                         }
                     }
-                    engine.ProcessEvents(1000);
+                    engine.ProcessEvents(5);
                 }
                 catch (EmoEngineException e)
                 {

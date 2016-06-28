@@ -3,14 +3,18 @@
 Here is the repository of the Emotiv SDK Community Edition, along with code examples and other development tools.
 * Supports EPOC (over Emotiv USB dongle)
 * Supports Insight and EPOC+ (over BTLE and Emotiv USB dongle)
-* Supports Win32/64, Mac, Linux, Android, iOS, Debian 8.3 Jessie (armhf)
+* Supports Win32/64, Mac, iOS, Android, iOS, Ubuntu and Debian (armhf)
 
 If you have questions or have knowledge to share, please visit our [forum](https://emotiv.com/forum/) which is the hub for our developer community.
 
 To get the SDK you can either:
-* clone this repository with `git` command line tool or a GUI client like [SourceTree](https://www.sourcetreeapp.com); or
-* click on the "Download ZIP" button (above, on the right) to get the zip archive of the latest version; or
-* go to [releases](https://github.com/Emotiv/community-sdk/releases) and download the archive of a particular release
+* Clone this repository with `git` command line tool or a GUI client like [SourceTree](https://www.sourcetreeapp.com); or
+* Click on the "Download ZIP" button (above, on the right) to get the zip archive of the latest version; or
+* Go to [releases](https://github.com/Emotiv/community-sdk/releases) and download the archive of a particular release
+
+This repo contains SDK for Win32/64, Mac, iOS, Ubuntu and Debian (armhf).
+
+Android SDK will be updated on [jcenter](https://bintray.com/nguoithichkhampha/maven/community) separately.
 
 ## Table of Contents
 1. [Changelog](#changelog)
@@ -29,7 +33,8 @@ See [changelog](CHANGELOG.md)
   * Windows 7, **only with Bluetooth adaptor that uses Broadcom BCM20702 chipset**
     (recommended one: Plugable USB 2.0 Bluetooth Adapter, http://plugable.com/products/usb-bt4le)
   * Mac OS X 10.10 or above (check if Bluetooth LMP Version is 0x6 from System Report)
-  * Android 4.4.3 or above
+  * iOS 8.0 or above (excluding iOS 8.3 and 8.4)
+  * Android 4.4.3 or above (excluding Android 5.0)
   * Ubuntu 14.04 / 15.10 64-bit (see [Connecting on Ubuntu and Debian](doc/Connecting on Ubuntu and Debian.md))
   * Debian 8.3 Jessie (armhf) (see [Connecting on Ubuntu and Debian](doc/Connecting on Ubuntu and Debian.md))
 
@@ -46,9 +51,7 @@ See [changelog](CHANGELOG.md)
 * Ubuntu and Debian: See [Connecting on Ubuntu and Debian](doc/Connecting on Ubuntu and Debian.md)
 
 ## API Documentation
-The API reference can be found here:
-
-http://emotiv.com/api/3.3.1/
+http://emotiv.github.io/community-sdk/
 
 ## Apps and Tools
 
@@ -76,12 +79,12 @@ Compatible with Insight / EPOC / EPOC+ via:
 Please follow the instructions to install the Emotiv browser plugin before using the CPanel.
 
 #### Insight App for Android
-Requires Android 4.4 or later
+Requires Android 4.4.3 or later
 
 https://play.google.com/store/apps/details?id=com.emotiv.insightapp
 
 #### Insight App for iOS
-Requires iOS 8.0 or later, **except iOS 8.3/8.4 due to BTLE data transmission limitation in those versions**
+Requires iOS 8.0 or later, **excluding iOS 8.3/8.4 due to BTLE data transmission limitation in those versions**
 
 https://itunes.apple.com/us/app/emotiv-insight/id1031805596
 
